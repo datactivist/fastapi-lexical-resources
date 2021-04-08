@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+nltk
+numpy
+requests
+gensim>=3.8.3,<4.0.0b0
+git+https://github.com/moreymat/magnitude.git@0.1.143.1#egg=pymagnitude
