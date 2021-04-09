@@ -4,7 +4,7 @@ import numpy as np
 from pathlib import Path
 from enum import Enum
 
-import embeddingsModel
+import embeddings_model
 
 from fastapi import FastAPI, Query, HTTPException
 from pydantic import BaseModel, Field
@@ -19,8 +19,8 @@ class Similarity_Query(BaseModel):
     keyword1: str
     keyword2: str
     embeddings_type: Optional[
-        embeddingsModel.EmbeddingsType
-    ] = embeddingsModel.EmbeddingsType.word2vec
+        embeddings_model.EmbeddingsType
+    ] = embeddings_model.EmbeddingsType.word2vec
     embeddings_name: Optional[
         str
     ] = "frWac_non_lem_no_postag_no_phrase_200_cbow_cut0.magnitude"
@@ -33,8 +33,8 @@ class Most_Similar_Query(BaseModel):
 
     keyword: str
     embeddings_type: Optional[
-        embeddingsModel.EmbeddingsType
-    ] = embeddingsModel.EmbeddingsType.word2vec
+        embeddings_model.EmbeddingsType
+    ] = embeddings_model.EmbeddingsType.word2vec
     embeddings_name: Optional[
         str
     ] = "frWac_non_lem_no_postag_no_phrase_200_cbow_cut0.magnitude"
@@ -85,8 +85,8 @@ class Most_Similar_From_Referentiel_Query(BaseModel):
     keyword: str
     referentiel: str
     embeddings_type: Optional[
-        embeddingsModel.EmbeddingsType
-    ] = embeddingsModel.EmbeddingsType.word2vec
+        embeddings_model.EmbeddingsType
+    ] = embeddings_model.EmbeddingsType.word2vec
     embeddings_name: Optional[
         str
     ] = "frWac_non_lem_no_postag_no_phrase_200_cbow_cut0.magnitude"
@@ -103,7 +103,7 @@ embeddings_path = Path("embeddings")
 # Looping on available .magnitude embeddings to save them in dictionnary
 print("Starting saving embeddings in dictionnary")
 for embeddings in list(embeddings_path.glob("**/*.magnitude")):
-    model_list[embeddings.name] = embeddingsModel.MagnitudeModel(
+    model_list[embeddings.name] = embeddings_model.MagnitudeModel(
         embeddings.parent.name, embeddings.name
     )
 print("Saving done")
@@ -121,7 +121,7 @@ app = FastAPI()
 
 
 @app.get("/help_embeddings/{embeddings_type}")
-async def get_embeddings_names(embeddings_type: embeddingsModel.EmbeddingsType):
+async def get_embeddings_names(embeddings_type: embeddings_model.EmbeddingsType):
     """
     ## Function
     Return every variant embeddings available for the embeddings_type given in parameter
@@ -131,7 +131,7 @@ async def get_embeddings_names(embeddings_type: embeddingsModel.EmbeddingsType):
     ## Output
     List of embeddings variant available
     """
-    if embeddings_type != embeddingsModel.EmbeddingsType.wordnet:
+    if embeddings_type != embeddings_model.EmbeddingsType.wordnet:
         path = Path("./embeddings") / Path(embeddings_type.value)
         results = []
         for filename in list(path.glob("**/*.magnitude")):
@@ -175,12 +175,12 @@ async def get_similarity(similarity_query: Similarity_Query):
     An int between 0 and 1
     """
 
-    if similarity_query.embeddings_type == embeddingsModel.EmbeddingsType.bert:
+    if similarity_query.embeddings_type == embeddings_model.EmbeddingsType.bert:
         raise HTTPException(
             status_code=501, detail="Bert embeddings not implemented yet"
         )
 
-    if similarity_query.embeddings_type != embeddingsModel.EmbeddingsType.wordnet:
+    if similarity_query.embeddings_type != embeddings_model.EmbeddingsType.wordnet:
         try:
             model = model_list[similarity_query.embeddings_name]
         except:
@@ -189,7 +189,7 @@ async def get_similarity(similarity_query: Similarity_Query):
                 detail="This embeddings_name doesn't exist for this embeddings_type. You can request the list of embeddings available for a particular embeddings type by requesting get(http/[...]/help_embeddings/{embeddings_type}",
             )
     else:
-        model = embeddingsModel.WordnetModel()
+        model = embeddings_model.WordnetModel()
         # TODO mettre dans le dict?
 
     return model.similarity(similarity_query.keyword1, similarity_query.keyword2)
@@ -213,12 +213,12 @@ async def get_most_similar(most_similar_query: Most_Similar_Query):
     A list of tuple of type (word, similary_type) with the topn most similar words
     """
 
-    if most_similar_query.embeddings_type == embeddingsModel.EmbeddingsType.bert:
+    if most_similar_query.embeddings_type == embeddings_model.EmbeddingsType.bert:
         raise HTTPException(
             status_code=501, detail="Bert embeddings not implemented yet"
         )
 
-    if most_similar_query.embeddings_type != embeddingsModel.EmbeddingsType.wordnet:
+    if most_similar_query.embeddings_type != embeddings_model.EmbeddingsType.wordnet:
         try:
             model = model_list[most_similar_query.embeddings_name]
         except:
@@ -227,7 +227,7 @@ async def get_most_similar(most_similar_query: Most_Similar_Query):
                 detail="This embeddings_name doesn't exist for this embeddings_type. You can request the list of embeddings available for a particular embeddings type by requesting get(http/[...]/help_embeddings/{embeddings_type}",
             )
     else:
-        model = embeddingsModel.WordnetModel()
+        model = embeddings_model.WordnetModel()
         # TODO mettre dans le dict?
 
     return model.most_similar(
@@ -258,7 +258,7 @@ async def get_most_similar_from_referenciel(
 
     if (
         most_similar_from_ref_query.embeddings_type
-        == embeddingsModel.EmbeddingsType.bert
+        == embeddings_model.EmbeddingsType.bert
     ):
         raise HTTPException(
             status_code=501, detail="Bert embeddings not implemented yet"
@@ -266,7 +266,7 @@ async def get_most_similar_from_referenciel(
 
     if (
         most_similar_from_ref_query.embeddings_type
-        != embeddingsModel.EmbeddingsType.wordnet
+        != embeddings_model.EmbeddingsType.wordnet
     ):
         try:
             model = model_list[most_similar_from_ref_query.embeddings_name]
@@ -276,7 +276,7 @@ async def get_most_similar_from_referenciel(
                 detail="This embeddings_name doesn't exist for this embeddings_type. You can request the list of embeddings available for a particular embeddings type by requesting get(http/[...]/help_embeddings/{embeddings_type}",
             )
     else:
-        model = embeddingsModel.WordnetModel()
+        model = embeddings_model.WordnetModel()
         # TODO mettre dans le dict?
 
     try:

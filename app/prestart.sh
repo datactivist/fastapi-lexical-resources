@@ -20,7 +20,7 @@ done
 
 echo ""
 echo "Starting conversion of embeddings to .magnitude, this may take some times..."
-script="convertEmbeddings.py"
+script="convert_embeddings.py"
 full=$path$script
 python3 $full
 echo "Conversion done"
@@ -28,7 +28,7 @@ echo ""
 
 echo ""
 echo "Starting preload of embeddings using most_similar function"
-script="preloadEmbeddings.py"
+script="preload_embeddings.py"
 full=$path$script
 python3 $full
 echo "Preloading done"
@@ -36,7 +36,7 @@ echo ""
 
 echo ""
 echo "Starting saving of datasud vectors"
-script="preloadReferentiels.py"
+script="preloadreferentiels.py"
 full=$path$script
 python3 $full
 echo "Saving done"

@@ -43,13 +43,13 @@ done
 
 # Updating embeddings activation config
 echo "Updating embeddings configuration"
-python3 app/preprocess/updateEmbeddingsConfig.py $embeddings_config
+python3 app/preprocess/update_embeddingsConfig.py $embeddings_config
 echo "Done"
 echo ""
 
 # Downloading missing embeddings and converting them
 echo "Downloading missing embeddings, this can take a while..."
-python3 app/preprocess/downloadEmbeddings.py
+python3 app/preprocess/download_embeddings.py
 echo "Downloading done!"
 echo ""
 

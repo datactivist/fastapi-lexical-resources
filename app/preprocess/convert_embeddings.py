@@ -1,5 +1,5 @@
 """
-Script to convert every downloaded files from dowloadEmbeddings.py in the directory tree app/embeddings/* into .magnitude files
+Script to convert every downloaded files from dowload_embeddings.py in the directory tree app/embeddings/* into .magnitude files
 """
 
 import os
