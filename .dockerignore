@@ -1,0 +1,6 @@
+app/embeddings/fasttext/cc.fr.300.vec
+app/embeddings/fasttext/cc.fr.300.magnitude
+app/embeddings/word2vec/frWiki_no_lem_no_postag_no_phrase_1000_cbow_cut100.bin
+app/embeddings/word2vec/frWiki_no_lem_no_postag_no_phrase_1000_cbow_cut100.magnitude
+app/embeddings/word2vec/frWac_postag_no_phrase_700_skip_cut50.bin
+app/embeddings/word2vec/frWac_postag_no_phrase_700_skip_cut50.magnitude
