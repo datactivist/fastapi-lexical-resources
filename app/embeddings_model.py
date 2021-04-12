@@ -124,17 +124,12 @@ class MagnitudeModel:
         # Load their vectors
         ref_keywords_vectors = np.load(referentiel)
 
-        print(len(ref_keywords_strings))
-        print(len(ref_keywords_vectors))
-
         # Calculate every keyword / ref_word similarities
         sim_list = []
         for keyword_str, keyword_vect in zip(
             ref_keywords_strings, ref_keywords_vectors
         ):
             sim_list.append((keyword_str, self.similarity(keyword, keyword_vect)))
-
-        print("sim calculated !!")
 
         # Sort them by similarity
         sim_list = sort_array_of_tuple_with_second_value(sim_list)
