@@ -3,8 +3,7 @@ Script to download every missing embeddings found in the embeddings_metadata.jso
 """
 
 import requests
-import os
-import gzip
+œimport gzip
 import shutil
 import json
 from pathlib import Path
@@ -36,8 +35,8 @@ def download_embeddings(embeddings):
     # if embeddings/embeddings_type directory doesn't exist, create it
     dir_path.mkdir(parents=False, exist_ok=True)
 
-    embeddings_temp_path, embeddings_extension = os.path.splitext(embeddings_dl)
-    print(embeddings_temp_path)
+    embeddings_temp_path = embeddings_dl.with_suffix("")
+    embeddings_extension = embeddings_dl.suffix
 
     # if the embeddings are not already downloaded and are activated, download them
     if (
