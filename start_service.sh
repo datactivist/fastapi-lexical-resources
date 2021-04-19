@@ -43,7 +43,7 @@ done
 
 # Updating embeddings activation config
 echo "Updating embeddings configuration"
-python3 app/preprocess/update_embeddingsConfig.py $embeddings_config
+python3 app/preprocess/update_embeddingsconfig.py $embeddings_config
 echo "Done"
 echo ""
 
