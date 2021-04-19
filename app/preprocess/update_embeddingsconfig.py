@@ -15,7 +15,7 @@ with open(embeddings_metadata_path / Path("embeddings_metadata.json")) as json_f
 if len(sys.argv) > 1:
     activation = sys.argv[1].split("|")
 else:
-    print("Usage: python3 updateEmbeddingsConfig.py <config-string>")
+    print("Usage: python3 updateEmbeddingsconfig.py <config-string>")
     exit(1)
 
 flag_no_embed = True
