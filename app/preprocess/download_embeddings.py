@@ -3,7 +3,7 @@ Script to download every missing embeddings found in the embeddings_metadata.jso
 """
 
 import requests
-œimport gzip
+import gzip
 import shutil
 import json
 from pathlib import Path
