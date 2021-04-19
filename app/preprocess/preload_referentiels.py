@@ -3,7 +3,6 @@ Script to preload and save datasud keywords as vector for each embeddings of typ
 """
 
 import json
-import os
 import numpy as np
 from pathlib import Path
 
@@ -38,20 +37,17 @@ def preload_datasud_vectors(
     """
 
     referentiel_vectors_path = referentiel_path / "vectors"
-    if not os.path.isdir(referentiel_vectors_path):
-        os.mkdir(referentiel_vectors_path)
+    referentiel_vectors_path.mkdir(parents=False, exist_ok=True)
 
     type_dir_path = referentiel_vectors_path / embeddings_type
-    if not os.path.isdir(type_dir_path):
-        os.mkdir(type_dir_path)
+    type_dir_path.mkdir(parents=False, exist_ok=True)
 
     name_dir_path = type_dir_path / Path(embeddings_name).with_suffix("")
-    if not os.path.isdir(name_dir_path):
-        os.mkdir(name_dir_path)
+    name_dir_path.mkdir(parents=False, exist_ok=True)
 
     vectors_name = name_dir_path / Path(referentiel_name).with_suffix(".npy")
 
-    if not os.path.isfile(vectors_name):
+    if not vectors_name.is_file():
 
         print("Saving", vectors_name)
         vectors = model.query(referentiel_keywords)

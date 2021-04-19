@@ -21,7 +21,7 @@ def decompress_archive(archivename, filename):
     with gzip.open(archivename, "rb") as f_in:
         with open(filename, "wb") as f_out:
             shutil.copyfileobj(f_in, f_out)
-    os.remove(archivename)
+    archivename.unlink()
 
 
 def download_embeddings(embeddings):
@@ -34,10 +34,10 @@ def download_embeddings(embeddings):
     embeddings_dl = dir_path / embeddings["dl_url"].rsplit("/", 1)[1]
 
     # if embeddings/embeddings_type directory doesn't exist, create it
-    if not os.path.isdir(dir_path):
-        os.mkdir(dir_path)
+    dir_path.mkdir(parents=False, exist_ok=True)
 
     embeddings_temp_path, embeddings_extension = os.path.splitext(embeddings_dl)
+    print(embeddings_temp_path)
 
     # if the embeddings are not already downloaded and are activated, download them
     if (
@@ -65,8 +65,8 @@ with open(embeddings_metadata_path / Path("embeddings_metadata.json")) as json_f
     data = json.load(json_file)
 
 # If embeddings directory doesn't exist, create it
-if not os.path.isdir(embeddings_path):
-    os.mkdir(embeddings_path)
+embeddings_path.mkdir(parents=False, exist_ok=True)
+
 
 # Loop on embeddings to download them
 for embeddings in data:
