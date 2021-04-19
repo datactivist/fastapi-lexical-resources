@@ -42,9 +42,9 @@ def download_embeddings(embeddings):
     # if the embeddings are not already downloaded and are activated, download them
     if (
         embeddings["is_activated"]
-        and not os.path.exists(embeddings_temp.with_suffix(".magnitude"))
-        and not os.path.exists(embeddings_temp)
-        and not os.path.exists(embeddings_dl)
+        and not embeddings_temp.with_suffix(".magnitude").exists()
+        and not embeddings_temp.exists()
+        and not embeddings_dl.exists()
     ):
 
         print(embeddings_temp_path, "does not exist, downloading it...")
