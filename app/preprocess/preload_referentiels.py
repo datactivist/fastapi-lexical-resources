@@ -8,7 +8,7 @@ from pathlib import Path
 
 from pymagnitude import *
 
-embeddings_metadata_path = Path("../")
+embeddings_metadata_path = Path("")
 referentiel_path = Path("referentiels")
 embeddings_path = Path("embeddings")
 

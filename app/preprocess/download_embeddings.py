@@ -8,8 +8,9 @@ import shutil
 import json
 from pathlib import Path
 
-embeddings_metadata_path = Path("")
-embeddings_path = Path("app/embeddings")
+root_path = Path('app')
+embeddings_metadata_path = root_path / Path("")
+embeddings_path = root_path / Path("embeddings")
 
 
 def decompress_archive(archivename, filename):

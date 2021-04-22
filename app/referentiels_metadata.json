@@ -1,0 +1,12 @@
+[
+    {
+        "name": "datasud",
+        "dl_url": "TODO",
+        "is_activated": true
+    },
+    {
+        "name": "dreal",
+        "dl_url": "TODO",
+        "is_activated": false
+    }
+]

@@ -40,17 +40,31 @@ while [ -n "$1" ]; do # while loop starts
 
 done
 
+update_paths()
+{
+    if [ $deployment_method == "local" ]; then
+        sed -i "s/root_path = .*/root_path = Path('app')/" app/preprocess/download_embeddings.py
+        sed -i "s/root_path = .*/root_path = Path('app')/" app/preprocess/download_referentiels.py
 
-# Updating embeddings activation config
-echo "Updating embeddings configuration"
-python3 app/preprocess/update_embeddingsconfig.py $embeddings_config
-echo "Done"
-echo ""
+    elif [ $deployment_method == "docker" ]; then
+        sed -i "s/root_path = .*/root_path = Path('')/" app/preprocess/download_embeddings.py
+        sed -i "s/root_path = .*/root_path = Path('')/" app/preprocess/download_referentiels.py
 
-# Downloading missing embeddings and converting them
+    else
+        echo "'$deployment_method' is not a valid value for deployment_method in config.config"
+    fi
+}
+
+update_paths
+
+# Downloading missing embeddings
 echo "Downloading missing embeddings, this can take a while..."
 python3 app/preprocess/download_embeddings.py
-echo "Downloading done!"
+echo ""
+
+# Downloading missing referentiels
+echo "Downloading missing referentiels, this can take a while..."
+python3 app/preprocess/download_referentiels.py
 echo ""
 
 
