@@ -3,7 +3,7 @@
 ## Déploiement sans docker
 
 Requirements: 
-- python >= 3.X
+- python >= 3.9
 
 ### Installation dépendances
 
@@ -23,7 +23,7 @@ bash ./start_service.sh
 ## Créer une image docker
 
 Requirements:
-- Python >= 3.X
+- Python >= 3.9
 - Docker >= 20.X
 
 Dans le fichier `fastapi-lexical-resources/api-config.config`, changer la valeur de `deployment_method` en `docker` et créez la configuration que vous souhaitez.

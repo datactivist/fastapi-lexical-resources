@@ -5,7 +5,7 @@ Script to download every missing referentiels found in the referentiel_metadata.
 from pathlib import Path
 import json
 
-root_path = Path('app')
+root_path = Path("app")
 referentiel_metadata_path = root_path / Path("")
 referentiel_path = root_path / Path("referentiels")
 referentiel_sources_path = referentiel_path / Path("sources")
@@ -29,7 +29,9 @@ def download_referentiels(referentiel):
         referentiel_dl = requests.get(referentiel["dl_url"], allow_redirects=True)
         """
 
-        raise ("is missing, you need to download referentiels manually!",)
+        raise (
+            "is missing, you need to download referentiels manually and put them in the following directory: app/referentiels/sources",
+        )
 
     else:
         print(referentiel_output, "already exist or is not activated")
