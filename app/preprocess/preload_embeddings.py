@@ -7,7 +7,7 @@ import json
 
 from pymagnitude import *
 
-embeddings_metadata_path = Path("../")
+embeddings_metadata_path = Path("")
 embeddings_path = Path("embeddings")
 
 

@@ -7,7 +7,7 @@ from pathlib import Path
 from subprocess import call
 
 
-embeddings_metadata_path = Path("../")
+embeddings_metadata_path = Path("")  # local: in app / docker: in app
 embeddings_path = Path("embeddings")
 
 
