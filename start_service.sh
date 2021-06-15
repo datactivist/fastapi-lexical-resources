@@ -47,8 +47,8 @@ update_paths()
         sed -i "s/root_path = .*/root_path = Path('app')/" app/preprocess/download_referentiels.py
 
     elif [ $deployment_method == "docker" ]; then
-        sed -i "s/root_path = .*/root_path = Path('')/" app/preprocess/download_embeddings.py
-        sed -i "s/root_path = .*/root_path = Path('')/" app/preprocess/download_referentiels.py
+        sed -i "s/root_path = .*/root_path = Path('app')/" app/preprocess/download_embeddings.py
+        sed -i "s/root_path = .*/root_path = Path('app')/" app/preprocess/download_referentiels.py
 
     else
         echo "'$deployment_method' is not a valid value for deployment_method in config.config"

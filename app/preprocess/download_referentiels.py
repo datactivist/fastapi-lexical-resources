@@ -5,7 +5,7 @@ Script to download every missing referentiels found in the referentiel_metadata.
 from pathlib import Path
 import json
 
-root_path = Path("app")
+root_path = Path('app')
 referentiel_metadata_path = root_path / Path("")
 referentiel_path = root_path / Path("referentiels")
 referentiel_sources_path = referentiel_path / Path("sources")
