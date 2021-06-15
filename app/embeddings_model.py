@@ -175,30 +175,53 @@ class WordnetModel:
                     sim = new_sim
         return sim
 
-    def most_similar(self, synset, topn=10, slider=0):
+    def most_similar(self, keyword, topn=10, slider=0):
         """
         Return a dictionnary with the list of similar words and their similarityType
 
-        Input: Synset
+        Input: keyword, synset or list of synset
         Output: List of synonyms, hyponyms, hypernyms and holonyms in a dictionnary
         """
+
+        if type(keyword) == nltk.corpus.reader.wordnet.Synset:
+            synsets = [keyword]
+        elif type(str):
+            synsets = wn.synsets(keyword, lang="fra")
 
         similar_words = {}
         for sim_type in SimilarityType:
             similar_words[sim_type] = []
 
-        if type(synset) == nltk.corpus.reader.wordnet.Synset:
+        for synset in synsets:
+            if type(synset) == nltk.corpus.reader.wordnet.Synset:
 
-            for synonym in synset.lemma_names("fra"):
-                similar_words[SimilarityType.synonym].append(synonym)
+                for synonym in synset.lemma_names("fra"):
+                    similar_words[SimilarityType.synonym].append(
+                        {"word": synonym, "similarity": -1}
+                    )
 
-            for hyponym in synset.hyponyms():
-                similar_words[SimilarityType.hyponym].append(hyponym)
+                for hyponym in synset.hyponyms():
+                    for word in hyponym.lemma_names("fra"):
+                        similar_words[SimilarityType.hyponym].append(
+                            {"word": word, "similarity": -1}
+                        )
 
-            for hypernym in synset.hypernyms():
-                similar_words[SimilarityType.hypernym].append(hypernym)
+                for hypernym in synset.hypernyms():
+                    for word in hypernym.lemma_names("fra"):
+                        similar_words[SimilarityType.hypernym].append(
+                            {"word": word, "similarity": -1}
+                        )
 
-            for holonym in synset.member_holonyms():
-                similar_words[SimilarityType.holonym].append(holonym)
+                for holonym in synset.member_holonyms():
+                    for word in holonym.lemma_names("fra"):
+                        similar_words[SimilarityType.holonym].append(
+                            {"word": word, "similarity": -1}
+                        )
+
+        with open("simwords.json", "w") as outfile:
+            json.dump(similar_words, outfile)
 
         return similar_words
+
+    def most_similar_from_referentiel(self, keyword, referentiel, topn=10, slider=0):
+        return []

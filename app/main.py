@@ -44,6 +44,20 @@ class Most_Similar_Query(BaseModel):
         schema_extra = {"example": {"keyword": "barrage", "topn": 5,}}
 
 
+class Get_Senses_Query(BaseModel):
+
+    keyword: str
+    embeddings_type: Optional[
+        embeddings_model.EmbeddingsType
+    ] = embeddings_model.EmbeddingsType.word2vec
+    embeddings_name: Optional[
+        str
+    ] = "frWac_non_lem_no_postag_no_phrase_200_cbow_cut0.magnitude"
+
+    class Config:
+        schema_extra = {"example": {"keyword": "barrage"}}
+
+
 class Tuple_Word_Sim(BaseModel):
 
     word: str
