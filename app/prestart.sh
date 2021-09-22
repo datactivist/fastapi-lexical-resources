@@ -35,7 +35,7 @@ echo "Preloading done"
 echo ""
 
 echo ""
-echo "Starting saving of datasud vectors"
+echo "Starting saving of referentiels vectors"
 script="preload_referentiels.py"
 full=$path$script
 python3 $full

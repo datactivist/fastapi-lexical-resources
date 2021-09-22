@@ -97,6 +97,7 @@ class Most_Similar_From_Referentiel_Query(BaseModel):
 
     keyword: str
     referentiel: str
+    ref_type: str
     embeddings_type: Optional[
         embeddings_model.EmbeddingsType
     ] = embeddings_model.EmbeddingsType.word2vec
@@ -308,7 +309,10 @@ async def get_most_similar_from_referenciel(
     most_similar_ref = model.most_similar_from_referentiel(
         most_similar_from_ref_query.keyword,
         referentiel,
+        most_similar_from_ref_query.ref_type,
         most_similar_from_ref_query.topn,
         most_similar_from_ref_query.slider,
     )
+    print(most_similar_ref)
+    print()
     return most_similar_ref

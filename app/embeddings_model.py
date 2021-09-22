@@ -103,7 +103,9 @@ class MagnitudeModel:
 
         return similar_words
 
-    def most_similar_from_referentiel(self, keyword, referentiel, topn=10, slider=0):
+    def most_similar_from_referentiel(
+        self, keyword, referentiel, ref_type, topn=10, slider=0
+    ):
         """
         Return the nearest neighbors of keyword taken from the referentiel
 
@@ -114,30 +116,51 @@ class MagnitudeModel:
         Output: Return the topn closest words to keyword from the referentiel
         """
 
-        # Load ref_words
-        with open(
-            referentiels_sources_path / referentiel.with_suffix(".json").name,
-            encoding="utf-16",
-        ) as json_file:
-            ref_keywords_strings = json.load(json_file,)["result"]
+        if ref_type == "tags":
+            # Load ref_words
+            with open(
+                referentiels_sources_path / referentiel.with_suffix(".json").name,
+                encoding="utf-16",
+            ) as json_file:
+                ref_keywords_strings = json.load(json_file,)["names"]
 
-        # Load their vectors
-        ref_keywords_vectors = np.load(referentiel)
+            # Load their vectors
+            ref_keywords_vectors = np.load(referentiel)
 
-        # Calculate every keyword / ref_word similarities
-        sim_list = []
-        for keyword_str, keyword_vect in zip(
-            ref_keywords_strings, ref_keywords_vectors
-        ):
-            sim_list.append((keyword_str, self.similarity(keyword, keyword_vect)))
+            # Calculate every keyword / ref_word similarities
+            sim_list = []
+            for keyword_str, keyword_vect in zip(
+                ref_keywords_strings, ref_keywords_vectors
+            ):
+                sim_list.append((keyword_str, self.similarity(keyword, keyword_vect)))
 
-        # Sort them by similarity
-        sim_list = sort_array_of_tuple_with_second_value(sim_list)
+            # Sort them by similarity
+            sim_list = sort_array_of_tuple_with_second_value(sim_list)
 
-        dict_list = []
-        for word in sim_list[slider : topn + slider]:
-            dict_list.append({"word": word[0], "similarity": word[1]})
-        return dict_list
+            dict_list = []
+            for word in sim_list[slider : topn + slider]:
+                dict_list.append({"word": word[0], "similarity": word[1]})
+            return dict_list
+
+        elif ref_type == "geoloc":
+
+            # load geoloc ref
+            with open(
+                referentiels_sources_path / referentiel.with_suffix(".json").name,
+                encoding="utf-16",
+            ) as json_file:
+                ref_geoloc_json = json.load(json_file,)
+
+            # load their vectors
+            id = ref_geoloc_json["names"].index(keyword)
+            parent_id = ref_geoloc_json["code_postal"].index(
+                ref_geoloc_json["parent"][id]
+            )
+            print("lexic", ref_geoloc_json["names"][parent_id])
+            return [{"word": ref_geoloc_json["names"][parent_id], "similarity": 1}]
+
+        else:
+            return []
 
 
 class WordnetModel:

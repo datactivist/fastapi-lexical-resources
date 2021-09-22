@@ -1,11 +1,11 @@
 [
     {
-        "name": "datasud",
+        "name": "keywords_datasud",
         "dl_url": "TODO",
         "is_activated": true
     },
     {
-        "name": "dreal",
+        "name": "geo_dreal",
         "dl_url": "TODO",
         "is_activated": false
     }

@@ -1,5 +1,5 @@
 """
-Script to preload and save datasud keywords as vector for each embeddings of type .magnitude in the directory tree app/embeddings/*
+Script to preload and save referentiels keywords as vector for each embeddings of type .magnitude in the directory tree app/embeddings/*
 """
 
 import json
@@ -24,11 +24,11 @@ def is_activated(embeddings, embeddings_metadata):
     return False
 
 
-def preload_datasud_vectors(
+def preload_referentiel_vectors(
     model, referentiel_name, referentiel_keywords, embeddings_type, embeddings_name
 ):
     """
-    Preload datasud vectors by saving them separately in "referentiels/vectors/embeddings_name/referentiel_name.npy"
+    Preload referentiels vectors by saving them separately in "referentiels/vectors/embeddings_name/referentiel_name.npy"
     Input:  model: magnitude model
             referentiel_name: name of the referentiel
             referentiel_keywords: list of strings
@@ -47,6 +47,8 @@ def preload_datasud_vectors(
 
     vectors_name = name_dir_path / Path(referentiel_name).with_suffix(".npy")
 
+    print("file_name:", vectors_name)
+
     if not vectors_name.is_file():
 
         print("Saving", vectors_name)
@@ -63,17 +65,18 @@ def preload_datasud_vectors(
 with open(embeddings_metadata_path / Path("embeddings_metadata.json")) as json_file:
     metadata = json.load(json_file)
 
-# Looping on available .json referentiel to save them as vectors
+# Looping on available .json keywords referentiel to save them as vectors
 referentiel_sources_path = referentiel_path / "sources"
 for referentiel in list(referentiel_sources_path.glob("**/*.json")):
+    print(referentiel)
     # Load referentiels as a list of string
     with open(referentiel, encoding="utf-16") as json_file:
-        referentiel_vectors = json.load(json_file,)["result"]
+        referentiel_vectors = json.load(json_file,)["names"]
 
     # Looping on available .magnitude embeddings to preload the referentiel on them
     for embeddings in list(embeddings_path.glob("**/*.magnitude")):
         if is_activated(embeddings, metadata):
-            preload_datasud_vectors(
+            preload_referentiel_vectors(
                 Magnitude(embeddings),
                 referentiel.name,
                 referentiel_vectors,
