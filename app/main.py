@@ -293,19 +293,6 @@ async def get_most_similar_from_referenciel(
         model = embeddings_model.WordnetModel()
         # TODO mettre dans le dict?
 
-    try:
-        key = (
-            str(Path(most_similar_from_ref_query.embeddings_name).with_suffix(""))
-            + "/"
-            + most_similar_from_ref_query.referentiel
-        )
-        referentiel = referentiel_list[key]
-    except:
-        raise HTTPException(
-            status_code=404,
-            detail="This referentiel doesn't exist. You can request the list of referentiels available by requesting get(http/[...]/help_referentiels",
-        )
-
     most_similar_ref = model.most_similar_from_referentiel(
         most_similar_from_ref_query.keyword,
         referentiel,
@@ -313,6 +300,4 @@ async def get_most_similar_from_referenciel(
         most_similar_from_ref_query.topn,
         most_similar_from_ref_query.slider,
     )
-    print(most_similar_ref)
-    print()
     return most_similar_ref
