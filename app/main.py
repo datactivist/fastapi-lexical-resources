@@ -40,6 +40,9 @@ class Most_Similar_Query(BaseModel):
     topn: Optional[int] = 10
     slider: Optional[int] = 0
 
+    only_vocabulary: Optional[bool] = False
+    referentiel: Optional[str] = ""
+
     class Config:
         schema_extra = {"example": {"keyword": "barrage", "topn": 5,}}
 
@@ -105,6 +108,7 @@ class Most_Similar_From_Referentiel_Query(BaseModel):
         str
     ] = "frWac_non_lem_no_postag_no_phrase_200_cbow_cut0.magnitude"
     topn: Optional[int] = 10
+    only_vocabulary: Optional[bool] = False
     slider: Optional[int] = 0
 
     class Config:
@@ -221,6 +225,7 @@ async def get_most_similar(most_similar_query: Most_Similar_Query):
     - **embeddings_type**: Type of the embeddings | default value: word2vec
     - **embeddings_name**: Variant of the embeddings | default value: frWac_non_lem_no_postag_no_phrase_200_cbow_cut0.magnitude
     - **topn**: number of neighbors to get | default value: 10
+    - **only_vocabulary**: only take words part of the vocabulary if available
     - **slider**: slide the results | default value: 0  - (i.e topn=10 and slider = 1 -> [1-11]) to avoid looping when depth>1
 
     ## Output
@@ -245,7 +250,11 @@ async def get_most_similar(most_similar_query: Most_Similar_Query):
         # TODO mettre dans le dict?
 
     return model.most_similar(
-        most_similar_query.keyword, most_similar_query.topn, most_similar_query.slider
+        most_similar_query.keyword,
+        most_similar_query.topn,
+        most_similar_query.slider,
+        most_similar_query.only_vocabulary,
+        most_similar_query.referentiel,
     )
 
 
@@ -264,6 +273,7 @@ async def get_most_similar_from_referenciel(
     - **embeddings_type**: Type of the embeddings | default value: word2vec
     - **embeddings_name**: Variant of the embeddings | default value: frWac_non_lem_no_postag_no_phrase_200_cbow_cut0.magnitude
     - **topn**: number of neighbors to get | default value: 10
+    - **only_vocabulary**: only take words part of the vocabulary if available
     - **slider**: slide the results | default value: 0  - (i.e topn=10 and slider = 1 -> [1-11]) to avoid looping when depth>1
 
     ## Output
@@ -298,6 +308,7 @@ async def get_most_similar_from_referenciel(
         referentiel,
         most_similar_from_ref_query.ref_type,
         most_similar_from_ref_query.topn,
+        most_similar_from_ref_query.only_vocabulary,
         most_similar_from_ref_query.slider,
     )
     return most_similar_ref
