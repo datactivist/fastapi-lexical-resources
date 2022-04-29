@@ -40,7 +40,7 @@ class Most_Similar_Query(BaseModel):
     topn: Optional[int] = 10
     slider: Optional[int] = 0
 
-    only_vocabulary: Optional[bool] = False
+    only_vocabulary: Optional[bool] = True
     referentiel: Optional[str] = ""
 
     class Config:
@@ -108,7 +108,6 @@ class Most_Similar_From_Referentiel_Query(BaseModel):
         str
     ] = "frWac_non_lem_no_postag_no_phrase_200_cbow_cut0.magnitude"
     topn: Optional[int] = 10
-    only_vocabulary: Optional[bool] = False
     slider: Optional[int] = 0
 
     class Config:
@@ -308,7 +307,6 @@ async def get_most_similar_from_referenciel(
         referentiel,
         most_similar_from_ref_query.ref_type,
         most_similar_from_ref_query.topn,
-        most_similar_from_ref_query.only_vocabulary,
         most_similar_from_ref_query.slider,
     )
     return most_similar_ref

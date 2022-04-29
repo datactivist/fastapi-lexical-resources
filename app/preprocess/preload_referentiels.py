@@ -69,6 +69,8 @@ with open(embeddings_metadata_path / Path("embeddings_metadata.json")) as json_f
 referentiel_sources_path = referentiel_path / "sources"
 for referentiel in list(referentiel_sources_path.glob("**/*.json")):
     print(referentiel)
+    if "vocabulary" in referentiel.name:
+        continue
     # Load referentiels as a list of string
     with open(referentiel, encoding="utf-16") as json_file:
         referentiel_vectors = json.load(json_file,)["names"]

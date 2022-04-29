@@ -41,18 +41,15 @@ def word_is_in_vocabulary(word, referentiel):
     If no vocabulary avalaible, return True by default
     """
 
-    vocab = referentiels_sources_path / referentiel.with_suffix(".json").name
-    print(vocab)
+    word = word.lower()
+    vocab = referentiels_sources_path / Path(f"vocabulary_{referentiel}.json")
     if not vocab.is_file():
         return True
 
-    with open(
-        referentiels_sources_path / referentiel.with_suffix(".json").name,
-        encoding="utf-16",
-    ) as json_file:
+    with open(vocab, encoding="utf-8",) as json_file:
         vocabulary = json.load(json_file)
 
-    for vocab_word in vocab:
+    for vocab_word in vocabulary:
         if vocab_word == word:
             return True
     print(word, "not part of vocabulary")
@@ -142,7 +139,7 @@ class MagnitudeModel:
         return similar_words
 
     def most_similar_from_referentiel(
-        self, keyword, referentiel, ref_type, topn=10, only_vocabulary=False, slider=0
+        self, keyword, referentiel, ref_type, topn=10, slider=0
     ):
         """
         Return the nearest neighbors of keyword taken from the referentiel
@@ -150,7 +147,6 @@ class MagnitudeModel:
         Input:  keyword: a word of type string
                 referentiel: a referentiel pointing to a list of words
                 topn: number of neighbors to get (default: 10)
-                only_vocabulary: Only output words that are part of the vocabulary if available
                 slider: slide the results (default: 0)  - (i.e topn=10 and slider = 2 -> [2-12]) to avoid looping when depth>1
         Output: Return the topn closest words to keyword from the referentiel
         """
@@ -177,17 +173,8 @@ class MagnitudeModel:
             sim_list = sort_array_of_tuple_with_second_value(sim_list)
 
             dict_list = []
-            for i, word in enumerate(sim_list[slider:]):
-                if i >= topn + slider:
-                    break
-                if (
-                    only_vocabulary
-                    and word_is_in_vocabulary(word[0], referentiel)
-                    or not only_vocabulary
-                ):
-                    dict_list.append({"word": word[0], "similarity": word[1]})
-                else:
-                    slider += 1
+            for word in sim_list[slider : topn + slider]:
+                dict_list.append({"word": word[0], "similarity": word[1]})
             return dict_list
 
         elif ref_type == "geoloc":
